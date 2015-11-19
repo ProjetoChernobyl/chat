@@ -1,6 +1,6 @@
 # chat
-# Testar comandos do Github
-Repositório para testar comandos do git
+
+Repositório com código de chat em java usando Socket e SocketServer
 
 
 ### Comandos para o terminal
