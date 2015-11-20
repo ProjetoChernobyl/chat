@@ -17,7 +17,7 @@ git push
 ```
 git clone https://github.com/ProjetoChernobyl/chat.git
 ```
-- Feito isso você terá uma pasta com o nome `git-teste` (IMPORTANTE: ENTRE NESSA PASTA)
+- Feito isso você terá uma pasta com o nome `chat` (IMPORTANTE: ENTRE NESSA PASTA)
 - você já tem um repositório configurado!
 para verificar o estado do repositório digite:
 ```
