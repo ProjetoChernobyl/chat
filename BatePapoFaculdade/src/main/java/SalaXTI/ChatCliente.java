@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,6 +16,7 @@ import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -44,11 +47,14 @@ public class ChatCliente extends JFrame {
 		}
 
 	}
+	
+	
 
 	public ChatCliente(String nome) {
 		super(nome);
-
-		this.nome = nome;
+		
+		/* Nome agora recebe a String digitada no JTextField do JOptionPane*/
+		this.nome = JOptionPane.showInputDialog(null, "Digite seu nome!");
 
 		Font fonte = new Font("Serif", Font.PLAIN, 16);
 
@@ -56,6 +62,7 @@ public class ChatCliente extends JFrame {
 		textoParaEnviar.setLocale(new Locale("pt","BR"));
 		textoParaEnviar.setFont(fonte);
 		textoParaEnviar.requestFocus();
+		textoParaEnviar.addKeyListener(new EnviarKeyListener());
 
 		JButton botao = new JButton("Enviar");
 		botao.setFont(fonte);
@@ -67,7 +74,7 @@ public class ChatCliente extends JFrame {
 		envio.add(BorderLayout.EAST, botao);
 		
 		textoREcebido = new JTextArea();
-		Colar: textoREcebido.setLineWrap(true);
+		textoREcebido.setLineWrap(true);
 		
 		textoREcebido.setLocale(new Locale("pt","BR"));
 		textoREcebido.setFont(fonte);
@@ -81,6 +88,37 @@ public class ChatCliente extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(500, 500);
 		setVisible(true);
+	}
+	
+	/**
+	 * Essa EnviarKeyListener inner class foi criada para o KeyListener.
+	 * Esse Listener faz com que as messagem possam ser enviadas a partir da tecla enter.
+	 * @author Kelvy
+	 *
+	 */
+	
+	public class EnviarKeyListener implements KeyListener{
+
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+				escritor.println(nome + " : " + textoParaEnviar.getText());
+				escritor.flush();
+				textoParaEnviar.setText(" ");
+				textoParaEnviar.requestFocus();
+			}
+			
+		}
+
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	private class EnviarListener implements ActionListener {
@@ -97,7 +135,7 @@ public class ChatCliente extends JFrame {
 
 	private void configurarRede() {
 		try {
-			socket = new Socket("192.168.0.102", 5000);
+			socket = new Socket("127.0.0.1", 5000);
 			escritor = new PrintWriter(socket.getOutputStream());
 			leitor = new Scanner(socket.getInputStream());
 			new Thread(new EscutaServidor()).start();
@@ -108,10 +146,9 @@ public class ChatCliente extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("pt","BR"));
-		new ChatCliente("Léo");
-		//new ChatCliente("Jesus");
-
+		
+		new ChatCliente("");
+		
 	}
-
+	
 }

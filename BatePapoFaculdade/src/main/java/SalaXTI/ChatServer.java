@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ChatServer {
-	List<PrintWriter> escritores = new ArrayList<>();
+	List<PrintWriter> escritores = new ArrayList<PrintWriter>();
 
 	public ChatServer() {
 		Scanner leitor;
